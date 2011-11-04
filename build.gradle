@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+springVersion = "3.1.0.RC1"
+slf4jVersion = "1.6.1"
+ehcacheVersion = "2.4.6"
+terracottaToolkitVersion = "1.3"
+terracottaCommonVersion = "3.3.0"
+quartzVersion = "2.1.0"
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven {
+	url "http://www.terracotta.org/download/reflector/releases"
+	url "http://www.terracotta.org/download/reflector/snapshots"
+	url "http://maven.springframework.org/milestone"
+  }
+}
+
+test {
+  //jvmArgs = ["-DterracottaConfigUrl=localhost:9510","-Dcom.tc.productkey.path=/Users/dpope/Tools/Terracotta/terracotta-license.key"]
+  useTestNG()
+}
+
+dependencies {
+  compile "org.springframework:spring-core:$springVersion"
+  compile "org.springframework:spring-jdbc:$springVersion"
+  compile "org.springframework:spring-context-support:$springVersion"
+  compile "org.springframework:spring-context:$springVersion"
+  compile "org.springframework:spring-web:$springVersion"
+  compile "net.sf.ehcache:ehcache-core-ee:$ehcacheVersion"
+  compile "org.terracotta:terracotta-toolkit-$terracottaToolkitVersion-runtime-ee:$terracottaCommonVersion"
+  compile "org.quartz-scheduler:quartz:$quartzVersion"
+  compile "log4j:log4j:1.2.16"
+  compile "org.apache.commons:commons-lang3:3.0.1"
+  runtime "net.sf.ehcache:ehcache-terracotta-ee:$ehcacheVersion"
+  runtime "org.slf4j:slf4j-api:$slf4jVersion"
+  runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+  runtime "org.hsqldb:hsqldb:2.2.4"
+  testCompile "org.springframework:spring-test:$springVersion"
+  testCompile "org.testng:testng:6.2.+"
+  testCompile "junit:junit:4.10"
+  testCompile "org.mockito:mockito-all:1.9.0-rc1"
+//  testCompile "org.kubek2k.mockito.spring:springockito:1.0.0-SNAPSHOT"
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.0-milestone-5'
+}
